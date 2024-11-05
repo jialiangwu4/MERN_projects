@@ -60,6 +60,10 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
     const { id } = req.params; // get the product id from the request params. id is the name of the parameter in the route
 
+    if (!mongoose.Types.ObjectId.isValid(id)) { // check if the product id is valid, aka. it is present in the database
+        return res.status(404).json({ success: false, message: "Invalid product id" });
+    }
+
     try {   
         const deletedProduct = await Product.findByIdAndDelete(id); // find the product by id and delete it from MongoDB
         return res.status(200).json({ success: true, message: "Product deleted successfully", data: deletedProduct });
