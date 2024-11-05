@@ -3,10 +3,10 @@ import dotenv from "dotenv"; // load configs
 import { connectDB } from "./config/db.js";
 import productRoutes from "./routes/product.route.js";
 
-const app = express();
-const PORT = 3000
-
 dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json()); // middleware to accept json data in the request body
 
