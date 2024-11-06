@@ -27,7 +27,10 @@ const Navbar = () => {
         </Text>
         <HStack spacing={8} alignItems={"center"}>
           <Link to={"/create"}>
-            <Button bg={useColorModeValue("gray.900", "gray.100")}>
+            <Button
+              bg={useColorModeValue("gray.900", "gray.100")}
+              _hover={{ bg: "blue.500" }}
+            >
               <FaPlus fontSize={"10px"} />
             </Button>
           </Link>
