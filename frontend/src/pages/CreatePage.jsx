@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { useState } from "react"; // import useState
+import { useProductStore } from "../store/product";
 
 const CreatePage = () => {
   const [newProduct, setProduct] = useState({
@@ -15,6 +16,17 @@ const CreatePage = () => {
     price: "",
     image: "",
   });
+
+  const { createProduct } = useProductStore();
+
+  const handleAddProduct = async () => {
+    const { success, message } = await createProduct(newProduct);
+    if (success) {
+      alert(message);
+    } else {
+      alert(message);
+    }
+  };
 
   return (
     <Container maxW={"3xl"}>
@@ -36,17 +48,17 @@ const CreatePage = () => {
               name="name"
               value={newProduct.name}
               autoComplete="on"
-              onChange={(e) => {
-                setProduct({ ...newProduct, name: e.target.value });
-              }}
+              onChange={
+                (e) => setProduct({ ...newProduct, name: e.target.value }) // update the product state
+              }
             />
             <Input
               type="number"
               placeholder="Product Price"
               name="price"
               value={newProduct.price}
-              onChange={(e) =>
-                setProduct({ ...newProduct, price: e.target.value })
+              onChange={
+                (e) => setProduct({ ...newProduct, price: e.target.value }) // update the product state
               }
             />
             <Input
@@ -55,11 +67,15 @@ const CreatePage = () => {
               placeholder="Product Image URL"
               name="image"
               value={newProduct.image}
-              onChange={(e) =>
-                setProduct({ ...newProduct, image: e.target.value })
+              onChange={
+                (e) => setProduct({ ...newProduct, image: e.target.value }) // update the product state
               }
             />
-            <Button bg={"gray.100"} _hover={{ bg: "blue.500" }}>
+            <Button
+              bg={"gray.100"}
+              _hover={{ bg: "blue.500" }}
+              onClick={handleAddProduct}
+            >
               Add Product
             </Button>
           </VStack>
