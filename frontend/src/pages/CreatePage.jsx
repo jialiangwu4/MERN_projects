@@ -26,18 +26,18 @@ const CreatePage = () => {
     if (success) {
       toaster.create({
         title: "Success",
-        descriptio: message,
-        status: "success",
+        description: message,
         duration: 3000,
         isClosable: true,
+        type: "success",
       });
     } else {
       toaster.create({
         title: "Error",
-        descriptio: message,
-        status: "error",
+        description: message,
         duration: 3000,
         isClosable: true,
+        type: "error",
       });
     }
   };
