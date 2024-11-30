@@ -31,6 +31,12 @@ const CreatePage = () => {
         isClosable: true,
         type: "success",
       });
+      // reset the product state on success
+      setProduct({
+        name: "",
+        price: "",
+        image: "",
+      });
     } else {
       toaster.create({
         title: "Error",
