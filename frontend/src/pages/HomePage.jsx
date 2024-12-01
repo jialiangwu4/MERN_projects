@@ -1,13 +1,4 @@
-import {
-  Box,
-  Button,
-  Container,
-  VStack,
-  Heading,
-  Input,
-  Text,
-  SimpleGrid,
-} from "@chakra-ui/react";
+import { Container, VStack, Text, SimpleGrid } from "@chakra-ui/react";
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { Link } from "react-router-dom";
 import { useProductStore } from "../store/product";
