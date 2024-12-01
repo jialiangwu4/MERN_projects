@@ -23,11 +23,10 @@ export const useProductStore = create((set) => ({
       body: JSON.stringify(newProduct), // convert the newProduct object to JSON
     });
 
-    if (!response.ok) {
-      return response.json();
-    }
-
     const data = await response.json();
+    if (!data.success) {
+      return { success: false, message: data.message };
+    }
 
     // update the state of the store after a new product is saved to the database
     // it takes the current state of the store (state) and returns a new state object
@@ -36,9 +35,35 @@ export const useProductStore = create((set) => ({
     set((state) => ({ products: [...state.products, data.data] }));
     return { success: true, message: "Prodcut created successfully" };
   },
+
   fetchProducts: async () => {
     const response = await fetch("/api/products");
+
     const data = await response.json();
+    if (!data.success) {
+      return { success: false, message: data.message };
+    }
+
     set({ products: data.data });
+    return { success: true, message: "Products fetched successfully" };
+  },
+
+  deleteProduct: async (id) => {
+    const response = await fetch(`/api/products/${id}`, {
+      method: "DELETE",
+    });
+
+    const data = await response.json();
+
+    if (!data.success) {
+      return { success: false, message: data.message };
+    }
+
+    // update the state of the store after a product is deleted
+    set((state) => ({
+      products: state.products.filter((product) => product._id !== id),
+    }));
+
+    return { success: true, message: "Product deleted successfully" };
   },
 }));

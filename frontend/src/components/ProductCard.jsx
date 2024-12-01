@@ -10,10 +10,34 @@ import {
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteForever } from "react-icons/md";
+import { useProductStore } from "../store/product";
+import { toaster } from "@/components/ui/toaster";
 
 const ProductCard = ({ product }) => {
   const textColor = useColorModeValue("gray.600", "gray.400");
   const bgColor = useColorModeValue("white", "gray.800");
+
+  const { deleteProduct } = useProductStore();
+  const handleDeleteProduct = async (id) => {
+    const { success, message } = await deleteProduct(id);
+    if (success) {
+      toaster.create({
+        title: "Success",
+        description: message,
+        duration: 3000,
+        isClosable: true,
+        type: "success",
+      });
+    } else {
+      toaster.create({
+        title: "Error",
+        description: message,
+        duration: 3000,
+        isClosable: true,
+        type: "error",
+      });
+    }
+  };
 
   return (
     <Box
@@ -44,7 +68,11 @@ const ProductCard = ({ product }) => {
           <IconButton aria-label="Edit" colorPalette={"cyan"}>
             <CiEdit />{" "}
           </IconButton>
-          <IconButton aria-label="Delete" colorPalette={"pink"}>
+          <IconButton
+            aria-label="Delete"
+            colorPalette={"pink"}
+            onClick={() => handleDeleteProduct(product._id)}
+          >
             <MdDeleteForever />
           </IconButton>
         </HStack>
