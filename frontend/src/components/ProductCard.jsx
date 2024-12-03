@@ -6,16 +6,32 @@ import {
   Text,
   HStack,
   IconButton,
+  Button,
+  VStack,
+  Input,
 } from "@chakra-ui/react";
+import {
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+  DialogTitle,
+  DialogActionTrigger,
+} from "@/components/ui/dialog";
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteForever } from "react-icons/md";
 import { useProductStore } from "../store/product";
 import { toaster } from "@/components/ui/toaster";
+import { useState } from "react";
 
 const ProductCard = ({ product }) => {
   const textColor = useColorModeValue("gray.600", "gray.400");
   const bgColor = useColorModeValue("white", "gray.800");
+  const [open, setOpen] = useState(false); // state to control the dialog window
+  const [currentProduct, setCurrentProduct] = useState(product);
 
   const { deleteProduct } = useProductStore();
   const handleDeleteProduct = async (id) => {
@@ -65,7 +81,11 @@ const ProductCard = ({ product }) => {
         </Text>
 
         <HStack spacing={2}>
-          <IconButton aria-label="Edit" colorPalette={"cyan"}>
+          <IconButton
+            aria-label="Edit"
+            colorPalette={"cyan"}
+            onClick={() => setOpen(true)}
+          >
             <CiEdit />{" "}
           </IconButton>
           <IconButton
@@ -77,6 +97,44 @@ const ProductCard = ({ product }) => {
           </IconButton>
         </HStack>
       </Box>
+
+      {/* Chakra UI Dialo (aka. Modal)  */}
+      <DialogRoot lazyMount open={open} onOpenChange={(e) => setOpen(e.open)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Update Product</DialogTitle>
+          </DialogHeader>
+          <DialogBody>
+            <VStack>
+              <Input
+                placeholder="Product Name"
+                name="name"
+                value={currentProduct.name}
+              />
+              <Input
+                placeholder="Product Price"
+                name="price"
+                type="number"
+                value={currentProduct.price}
+              />
+              <Input
+                placeholder="Image URL"
+                name="image"
+                value={currentProduct.image}
+              />
+            </VStack>
+          </DialogBody>
+          <DialogFooter>
+            <Button colorPalette="teal" mr={3}>
+              Update
+            </Button>
+            <DialogActionTrigger asChild>
+              <Button variant="ghost">Cancel</Button>
+            </DialogActionTrigger>
+          </DialogFooter>
+          <DialogCloseTrigger />
+        </DialogContent>
+      </DialogRoot>
     </Box>
   );
 };
