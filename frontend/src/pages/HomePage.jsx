@@ -11,7 +11,6 @@ const HomePage = () => {
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
-  console.log("products", products);
 
   return (
     <Container maxW={"9xl"}>
