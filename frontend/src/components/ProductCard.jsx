@@ -33,9 +33,33 @@ const ProductCard = ({ product }) => {
   const [open, setOpen] = useState(false); // state to control the dialog window
   const [currentProduct, setCurrentProduct] = useState(product);
 
-  const { deleteProduct } = useProductStore();
+  const { deleteProduct, updateProduct } = useProductStore();
   const handleDeleteProduct = async (id) => {
     const { success, message } = await deleteProduct(id);
+    if (success) {
+      toaster.create({
+        title: "Success",
+        description: message,
+        duration: 3000,
+        isClosable: true,
+        type: "success",
+      });
+    } else {
+      toaster.create({
+        title: "Error",
+        description: message,
+        duration: 3000,
+        isClosable: true,
+        type: "error",
+      });
+    }
+  };
+
+  const handleUpdateProduct = async (currentProduct_id, currentProduct) => {
+    const { success, message } = await updateProduct(
+      currentProduct._id,
+      currentProduct
+    );
     if (success) {
       toaster.create({
         title: "Success",
@@ -110,24 +134,47 @@ const ProductCard = ({ product }) => {
                 placeholder="Product Name"
                 name="name"
                 value={currentProduct.name}
+                onChange={(e) =>
+                  setCurrentProduct({ ...currentProduct, name: e.target.value })
+                }
               />
               <Input
                 placeholder="Product Price"
                 name="price"
                 type="number"
                 value={currentProduct.price}
+                onChange={(e) =>
+                  setCurrentProduct({
+                    ...currentProduct,
+                    price: e.target.value,
+                  })
+                }
               />
               <Input
                 placeholder="Image URL"
                 name="image"
                 value={currentProduct.image}
+                onChange={(e) =>
+                  setCurrentProduct({
+                    ...currentProduct,
+                    image: e.target.value,
+                  })
+                }
               />
             </VStack>
           </DialogBody>
           <DialogFooter>
-            <Button colorPalette="teal" mr={3}>
-              Update
-            </Button>
+            <DialogActionTrigger asChild>
+              <Button
+                colorPalette="teal"
+                mr={3}
+                onClick={() =>
+                  handleUpdateProduct(currentProduct._id, currentProduct)
+                }
+              >
+                Update
+              </Button>
+            </DialogActionTrigger>
             <DialogActionTrigger asChild>
               <Button variant="ghost">Cancel</Button>
             </DialogActionTrigger>

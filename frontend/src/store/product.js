@@ -66,4 +66,34 @@ export const useProductStore = create((set) => ({
 
     return { success: true, message: "Product deleted successfully" };
   },
+
+  updateProduct: async (id, updatedProduct) => {
+    const response = await fetch(`/api/products/${id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(updatedProduct),
+    });
+
+    const data = await response.json();
+
+    if (!data.success) {
+      return { success: false, message: data.message };
+    }
+
+    // update the UI immediately without needing to refresh the page
+    // update the state of the store after a product is updated
+    // loop through all products in the state
+    // if the product id matches the id of the updated product
+    // replace the old product with the new one
+    // otherwise just keep the old product
+    set((state) => ({
+      products: state.products.map((product) =>
+        product._id === id ? data.data : product
+      ),
+    }));
+
+    return { success: true, message: "Product updated successfully" };
+  },
 }));
