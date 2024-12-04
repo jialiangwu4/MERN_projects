@@ -22,6 +22,7 @@ const HomePage = () => {
           bg={useColorModeValue("gray.900", "gray.100")}
           bgClip={"text"}
           textAlign={"center"}
+          mt={"20px"}
         >
           Current Products
         </Text>
